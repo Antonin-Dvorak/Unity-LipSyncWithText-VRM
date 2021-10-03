@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VRM;
 
-public class TalkWithLipSync : MonoBehaviour
+public class PresetLipSync : MonoBehaviour
 {
     private VRMBlendShapeProxy _proxy;
 
@@ -12,6 +12,9 @@ public class TalkWithLipSync : MonoBehaviour
     [Range(0, 1)] public float _U_Value;
     [Range(0, 1)] public float _E_Value;
     [Range(0, 1)] public float _O_Value;
+    [Range(0, 1)] public float _Blink_Value;
+    [Range(0, 1)] public float _Fun_Value;
+
 
 
     [SerializeField] string message;
@@ -21,7 +24,9 @@ public class TalkWithLipSync : MonoBehaviour
     List<char> listU = new List<char>();
     List<char> listE = new List<char>();
     List<char> listO = new List<char>();
-
+    List<char> listM = new List<char>();
+    List<char> listBlink = new List<char>();
+    List<char> listFun = new List<char>();
 
     bool isRunning = false;
 
@@ -40,17 +45,24 @@ public class TalkWithLipSync : MonoBehaviour
 
         _proxy = GetComponent<VRMBlendShapeProxy>();
 
-        char[] charA = new char[] { 'あ', 'か', 'が', 'さ', 'ざ', 'た', 'だ', 'な', 'は', 'ば', 'ま', 'や', 'ゃ', 'ら', 'わ' };
-        char[] charI = new char[] { 'い', 'き', 'ぎ', 'し', 'じ', 'ち', 'ぢ', 'に', 'ひ', 'び', 'み', 'り' };
-        char[] charU = new char[] { 'う', 'く', 'ぐ', 'す', 'ず', 'つ', 'づ', 'ぬ', 'ふ', 'ぶ', 'む', 'ゆ', 'ゅ', 'る', 'を' };
-        char[] charE = new char[] { 'え', 'け', 'げ', 'せ', 'ぜ', 'て', 'で', 'ね', 'へ', 'べ', 'め', 'れ' };
-        char[] charO = new char[] { 'お', 'こ', 'ご', 'そ', 'ぞ', 'と', 'ど', 'の', 'ほ', 'ぼ', 'も', 'よ', 'ょ', 'ろ' };//「ん」はその他
+        char[] charA = new char[] { 'あ', 'ぁ', 'か', 'が', 'さ', 'ざ', 'た', 'だ', 'な', 'は', 'ば', 'や', 'ら', 'わ' };
+        char[] charI = new char[] { 'い', 'ぃ', 'き', 'ぎ', 'し', 'じ', 'ち', 'ぢ', 'に', 'ひ', 'び', 'り' };
+        char[] charU = new char[] { 'う', 'ぅ', 'く', 'ぐ', 'す', 'ず', 'つ', 'づ', 'ぬ', 'ふ', 'ぶ', 'ゆ', 'る', 'を'};
+        char[] charE = new char[] { 'え', 'ぇ', 'け', 'げ', 'せ', 'ぜ', 'て', 'で', 'ね', 'へ', 'べ', 'れ'};
+        char[] charO = new char[] { 'お', 'ぉ', 'こ', 'ご', 'そ', 'ぞ', 'と', 'ど', 'の', 'ほ', 'ぼ', 'よ', 'ろ'};//「ん」はその他
+        char[] charM = new char[] { 'ま' ,'み', 'む', 'め', 'も', 'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ', 'ば', 'び', 'ぶ', 'べ', 'ぼ' };
+        char[] charBlink = new char[] { '瞬'};
+        char[] charFun = new char[] { '笑'};
+
 
         listA.AddRange(charA);
         listI.AddRange(charI);
         listU.AddRange(charU);
         listE.AddRange(charE);
         listO.AddRange(charO);
+        listM.AddRange(charM);
+        listBlink.AddRange(charBlink);
+        listFun.AddRange(charFun);
 
         StartCoroutine(coroutineMethod);
     }
@@ -67,11 +79,14 @@ public class TalkWithLipSync : MonoBehaviour
                     {BlendShapeKey.CreateFromPreset(BlendShapePreset.U), _U_Value}, // [0, 1] の範囲で Weight を指定
                     {BlendShapeKey.CreateFromPreset(BlendShapePreset.E), _E_Value}, // [0, 1] の範囲で Weight を指定
                     {BlendShapeKey.CreateFromPreset(BlendShapePreset.O), _O_Value}, // [0, 1] の範囲で Weight を指定
-                });
+                
+                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.Blink), _Blink_Value}, // [0, 1] の範囲で Weight を指定
+                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.Fun), _Fun_Value}, // [0, 1] の範囲で Weight を指定
+        });
         if ((isRunning != null) && (isRunning))//コルーチン中で
         {
             if (changing)//読み込んだ文字の数値が1f以下なら
-            {
+            { 
                 ChangeValue();
             }
         }
@@ -84,6 +99,16 @@ public class TalkWithLipSync : MonoBehaviour
 
         foreach (char c in message)//メッセージを一文字ずつ「ｃ」と置いて処理
         {
+            if (listBlink.Contains(c))
+            {
+                _Blink_Value = 1;
+            }
+            if (listFun.Contains(c))
+            {
+                _Fun_Value = 0.5f;
+            }
+
+
             if (listA.Contains(c))
             {
                 Debug.Log("A");
@@ -110,10 +135,15 @@ public class TalkWithLipSync : MonoBehaviour
                 Debug.Log("O");
                 newVowel = "O";
             }
+            else if (listM.Contains(c))
+            {
+                Debug.Log("M");
+                newVowel = "M";
+            }
             changing = true;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(1f);
         }
-
+        
         isRunning = false;
     }
 
@@ -125,7 +155,7 @@ public class TalkWithLipSync : MonoBehaviour
         {
             if (oldVowel != null)
             {
-                if (oldVowel == "A")
+                if ((oldVowel == "A") | (oldVowel == "M"))
                 {
                     _A_Value -= 0.1f;
                 }
@@ -168,6 +198,15 @@ public class TalkWithLipSync : MonoBehaviour
                 {
                         _O_Value += 0.1f;
                 }
+                else if (newVowel == "M")
+                {
+                    if (n == 1)
+                    {
+                        oldVowel = null;
+                        ResetValue();
+                    }
+                    _A_Value += 0.1f;
+                }
             }
         }
         else if (n == 10)
@@ -176,14 +215,13 @@ public class TalkWithLipSync : MonoBehaviour
             n = 0;
             oldVowel = newVowel;
             newVowel = null;
-            Debug.Log(oldVowel);
             StartCoroutine(coroutineMethod);
         }
     }
 
     void ResetValue()
     {
-
+        
 
         _A_Value = 0;
         _I_Value = 0;
