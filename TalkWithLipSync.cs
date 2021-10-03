@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VRM;
 
-public class PresetLipSync : MonoBehaviour
+public class TalkWithLipSync : MonoBehaviour
 {
     private VRMBlendShapeProxy _proxy;
 
