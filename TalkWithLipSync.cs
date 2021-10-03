@@ -40,11 +40,11 @@ public class TalkWithLipSync : MonoBehaviour
 
         _proxy = GetComponent<VRMBlendShapeProxy>();
 
-        char[] charA = new char[] { '‚ ', '‚©', '‚ª', '‚³', '‚´', '‚½', '‚¾', '‚È', '‚Í', '‚Î', '‚Ü', '‚â', '‚ç', '‚í' };
-        char[] charI = new char[] { '‚¢', '‚«', '‚¬', '‚µ', '‚¶', '‚¿', '‚À', '‚É', '‚Ğ', '‚Ñ', '‚İ', '‚è' };
-        char[] charU = new char[] { '‚¤', '‚­', '‚®', '‚·', '‚¸', '‚Â', '‚Ã', '‚Ê', '‚Ó', '‚Ô', '‚Ş', '‚ä', '‚é', '‚ğ'};
-        char[] charE = new char[] { '‚¦', '‚¯', '‚°', '‚¹', '‚º', '‚Ä', '‚Å', '‚Ë', '‚Ö', '‚×', '‚ß', '‚ê'};
-        char[] charO = new char[] { '‚¨', '‚±', '‚²', '‚»', '‚¼', '‚Æ', '‚Ç', '‚Ì', '‚Ù', '‚Ú', '‚à', '‚æ', '‚ë'};//u‚ñv‚Í‚»‚Ì‘¼
+        char[] charA = new char[] { 'ã‚', 'ã‹', 'ãŒ', 'ã•', 'ã–', 'ãŸ', 'ã ', 'ãª', 'ã¯', 'ã°', 'ã¾', 'ã‚„', 'ã‚ƒ', 'ã‚‰', 'ã‚' };
+        char[] charI = new char[] { 'ã„', 'ã', 'ã', 'ã—', 'ã˜', 'ã¡', 'ã¢', 'ã«', 'ã²', 'ã³', 'ã¿', 'ã‚Š' };
+        char[] charU = new char[] { 'ã†', 'ã', 'ã', 'ã™', 'ãš', 'ã¤', 'ã¥', 'ã¬', 'ãµ', 'ã¶', 'ã‚€', 'ã‚†', 'ã‚…', 'ã‚‹', 'ã‚’' };
+        char[] charE = new char[] { 'ãˆ', 'ã‘', 'ã’', 'ã›', 'ãœ', 'ã¦', 'ã§', 'ã­', 'ã¸', 'ã¹', 'ã‚', 'ã‚Œ' };
+        char[] charO = new char[] { 'ãŠ', 'ã“', 'ã”', 'ã', 'ã', 'ã¨', 'ã©', 'ã®', 'ã»', 'ã¼', 'ã‚‚', 'ã‚ˆ', 'ã‚‡', 'ã‚' };//ã€Œã‚“ã€ã¯ãã®ä»–
 
         listA.AddRange(charA);
         listI.AddRange(charI);
@@ -62,28 +62,19 @@ public class TalkWithLipSync : MonoBehaviour
 
         _proxy.SetValues(new Dictionary<BlendShapeKey, float>
                 {
-                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.A), _A_Value}, //_A_Value‚Ì’l‚ÉƒuƒŒƒ“ƒhƒVƒFƒCƒv‚ğ‚Á‚Ä‚­‚é
-                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.I), _I_Value}, // [0, 1] ‚Ì”ÍˆÍ‚Å Weight ‚ğw’è
-                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.U), _U_Value}, // [0, 1] ‚Ì”ÍˆÍ‚Å Weight ‚ğw’è
-                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.E), _E_Value}, // [0, 1] ‚Ì”ÍˆÍ‚Å Weight ‚ğw’è
-                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.O), _O_Value}, // [0, 1] ‚Ì”ÍˆÍ‚Å Weight ‚ğw’è
+                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.A), _A_Value}, //_A_Valueã®å€¤ã«ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚·ã‚§ã‚¤ãƒ—ã‚’æŒã£ã¦ãã‚‹
+                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.I), _I_Value}, // [0, 1] ã®ç¯„å›²ã§ Weight ã‚’æŒ‡å®š
+                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.U), _U_Value}, // [0, 1] ã®ç¯„å›²ã§ Weight ã‚’æŒ‡å®š
+                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.E), _E_Value}, // [0, 1] ã®ç¯„å›²ã§ Weight ã‚’æŒ‡å®š
+                    {BlendShapeKey.CreateFromPreset(BlendShapePreset.O), _O_Value}, // [0, 1] ã®ç¯„å›²ã§ Weight ã‚’æŒ‡å®š
                 });
-        if ((isRunning != null) && (isRunning))//ƒRƒ‹[ƒ`ƒ“’†‚Å
+        if ((isRunning != null) && (isRunning))//ã‚³ãƒ«ãƒ¼ãƒãƒ³ä¸­ã§
         {
-            if (changing)//“Ç‚İ‚ñ‚¾•¶š‚Ì”’l‚ª1fˆÈ‰º‚È‚ç
+            if (changing)//èª­ã¿è¾¼ã‚“ã æ–‡å­—ã®æ•°å€¤ãŒ1fä»¥ä¸‹ãªã‚‰
             {
-                
-                Count();
                 ChangeValue();
             }
-            else//‚P‚É‚È‚Á‚½‚ç
-            {
-                //
-
-            }
-
         }
-
     }
 
     IEnumerator DoLipSync()
@@ -91,7 +82,7 @@ public class TalkWithLipSync : MonoBehaviour
         if (isRunning) { yield break; }
         isRunning = true;
 
-        foreach (char c in message)//ƒƒbƒZ[ƒW‚ğˆê•¶š‚¸‚Âu‚ƒv‚Æ’u‚¢‚Äˆ—
+        foreach (char c in message)//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ä¸€æ–‡å­—ãšã¤ã€Œï½ƒã€ã¨ç½®ã„ã¦å‡¦ç†
         {
             if (listA.Contains(c))
             {
@@ -120,126 +111,79 @@ public class TalkWithLipSync : MonoBehaviour
                 newVowel = "O";
             }
             changing = true;
-            //
-            Debug.Log("Stop!");
-            
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
-        
+
         isRunning = false;
     }
 
-    void Count()
+    void ChangeValue()
     {
-        if (n == 0)
-        {
-            //StopCoroutine(coroutineMethod);
-        }
-
+        StopCoroutine(coroutineMethod);
         n += 1;
-        //Debug.Log(n);
-        if (n == 10)//“¯‰¹‚ª‘±‚¢‚Ä‚à–â‘è‚È‚¢
+        if (n != 10)
+        {
+            if (oldVowel != null)
+            {
+                if (oldVowel == "A")
+                {
+                    _A_Value -= 0.1f;
+                }
+                else if (oldVowel == "I")
+                {
+                    _I_Value -= 0.1f;
+                }
+                else if (oldVowel == "U")
+                {
+                    _U_Value -= 0.1f;
+                }
+                else if (oldVowel == "E")
+                {
+                    _E_Value -= 0.1f;
+                }
+                else if (oldVowel == "O")
+                {
+                    _O_Value -= 0.1f;
+                }
+            }
+            if (newVowel != null)
+            {
+                if (newVowel == "A")
+                {
+                        _A_Value += 0.1f;
+                }
+                else if (newVowel == "I")
+                {
+                        _I_Value += 0.1f;
+                }
+                else if (newVowel == "U")
+                {
+                        _U_Value += 0.1f;
+                }
+                else if (newVowel == "E")
+                {
+                        _E_Value += 0.1f;
+                }
+                else if (newVowel == "O")
+                {
+                        _O_Value += 0.1f;
+                }
+            }
+        }
+        else if (n == 10)
         {
             changing = false;
             n = 0;
             oldVowel = newVowel;
             newVowel = null;
             Debug.Log(oldVowel);
-            //StartCoroutine(coroutineMethod);
+            StartCoroutine(coroutineMethod);
         }
     }
-
-
-
-
-    void ChangeValue()
-    {
-        if (oldVowel != null)
-        {
-            if (oldVowel == "A")
-            {
-                if (_A_Value >= 0f)
-                {
-                    _A_Value -= 0.1f;
-                }
-            }
-            else if (oldVowel == "I")
-            {
-                if (_I_Value >= 0f)
-                {
-                    _I_Value -= 0.1f;
-                }
-            }
-            else if (oldVowel == "U")
-            {
-                if (_U_Value >= 0f)
-                {
-                    _U_Value -= 0.1f;
-                }
-            }
-            else if (oldVowel == "E")
-            {
-                if (_E_Value >= 0f)
-                {
-                    _E_Value -= 0.1f;
-                }
-            }
-            else if (oldVowel == "O")
-            {
-                if (_O_Value >= 0f)
-                {
-                    _O_Value -= 0.1f;
-                }
-            }
-        }
-        //valueToCrease += 0.1f;
-        if (newVowel != null)
-        {
-            if (newVowel == "A")
-            {
-                if (_A_Value <= 1f)
-                {
-                    _A_Value += 0.1f;
-
-                }
-            }
-            else if (newVowel == "I")
-            {
-                if (_I_Value <= 1f)
-                {
-                    _I_Value += 0.1f;
-                }
-            }
-            else if (newVowel == "U")
-            {
-                if (_U_Value <= 1f)
-                {
-                    _U_Value += 0.1f;
-                }
-            }
-            else if (newVowel == "E")
-            {
-                if (_E_Value <= 1f)
-                {
-                    _E_Value += 0.1f;
-                }
-            }
-            else if (newVowel == "O")
-            {
-                if (_O_Value <= 1f)
-                {
-                    _O_Value += 0.1f;
-                }
-            }
-        }
-    }
-
-
-
 
     void ResetValue()
     {
-        
+
 
         _A_Value = 0;
         _I_Value = 0;
