@@ -40,11 +40,11 @@ public class TalkWithLipSync : MonoBehaviour
 
         _proxy = GetComponent<VRMBlendShapeProxy>();
 
-        char[] charA = new char[] { 'あ', 'か', 'が', 'さ', 'ざ', 'た', 'だ', 'な', 'は', 'ば', 'ま', 'や', 'ら', 'わ' };
+        char[] charA = new char[] { 'あ', 'か', 'が', 'さ', 'ざ', 'た', 'だ', 'な', 'は', 'ば', 'ま', 'や', 'ゃ', 'ら', 'わ' };
         char[] charI = new char[] { 'い', 'き', 'ぎ', 'し', 'じ', 'ち', 'ぢ', 'に', 'ひ', 'び', 'み', 'り' };
-        char[] charU = new char[] { 'う', 'く', 'ぐ', 'す', 'ず', 'つ', 'づ', 'ぬ', 'ふ', 'ぶ', 'む', 'ゆ', 'る', 'を'};
-        char[] charE = new char[] { 'え', 'け', 'げ', 'せ', 'ぜ', 'て', 'で', 'ね', 'へ', 'べ', 'め', 'れ'};
-        char[] charO = new char[] { 'お', 'こ', 'ご', 'そ', 'ぞ', 'と', 'ど', 'の', 'ほ', 'ぼ', 'も', 'よ', 'ろ'};//「ん」はその他
+        char[] charU = new char[] { 'う', 'く', 'ぐ', 'す', 'ず', 'つ', 'づ', 'ぬ', 'ふ', 'ぶ', 'む', 'ゆ', 'ゅ', 'る', 'を' };
+        char[] charE = new char[] { 'え', 'け', 'げ', 'せ', 'ぜ', 'て', 'で', 'ね', 'へ', 'べ', 'め', 'れ' };
+        char[] charO = new char[] { 'お', 'こ', 'ご', 'そ', 'ぞ', 'と', 'ど', 'の', 'ほ', 'ぼ', 'も', 'よ', 'ょ', 'ろ' };//「ん」はその他
 
         listA.AddRange(charA);
         listI.AddRange(charI);
@@ -72,18 +72,9 @@ public class TalkWithLipSync : MonoBehaviour
         {
             if (changing)//読み込んだ文字の数値が1f以下なら
             {
-                
-                Count();
                 ChangeValue();
             }
-            else//１になったら
-            {
-                //
-
-            }
-
         }
-
     }
 
     IEnumerator DoLipSync()
@@ -120,126 +111,95 @@ public class TalkWithLipSync : MonoBehaviour
                 newVowel = "O";
             }
             changing = true;
-            //
-            Debug.Log("Stop!");
-            
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
-        
+
         isRunning = false;
     }
 
-    void Count()
+    void ChangeValue()
     {
-        if (n == 0)
-        {
-            //StopCoroutine(coroutineMethod);
-        }
-
+        StopCoroutine(coroutineMethod);
         n += 1;
-        //Debug.Log(n);
-        if (n == 10)//同音が続いても問題ない
+        if (n != 10)
+        {
+            if (oldVowel != null)
+            {
+                if (oldVowel == "A")
+                {
+                    _A_Value -= 0.1f;
+                }
+                else if (oldVowel == "I")
+                {
+                    _I_Value -= 0.1f;
+                }
+                else if (oldVowel == "U")
+                {
+                    _U_Value -= 0.1f;
+                }
+                else if (oldVowel == "E")
+                {
+                    _E_Value -= 0.1f;
+                }
+                else if (oldVowel == "O")
+                {
+                    _O_Value -= 0.1f;
+                }
+            }
+            if (newVowel != null)
+            {
+                if (newVowel == "A")
+                {
+                    if (_A_Value <= 1f)
+                    {
+                        _A_Value += 0.1f;
+
+                    }
+                }
+                else if (newVowel == "I")
+                {
+                    if (_I_Value <= 1f)
+                    {
+                        _I_Value += 0.1f;
+                    }
+                }
+                else if (newVowel == "U")
+                {
+                    if (_U_Value <= 1f)
+                    {
+                        _U_Value += 0.1f;
+                    }
+                }
+                else if (newVowel == "E")
+                {
+                    if (_E_Value <= 1f)
+                    {
+                        _E_Value += 0.1f;
+                    }
+                }
+                else if (newVowel == "O")
+                {
+                    if (_O_Value <= 1f)
+                    {
+                        _O_Value += 0.1f;
+                    }
+                }
+            }
+        }
+        else if (n == 10)
         {
             changing = false;
             n = 0;
             oldVowel = newVowel;
             newVowel = null;
             Debug.Log(oldVowel);
-            //StartCoroutine(coroutineMethod);
+            StartCoroutine(coroutineMethod);
         }
     }
-
-
-
-
-    void ChangeValue()
-    {
-        if (oldVowel != null)
-        {
-            if (oldVowel == "A")
-            {
-                if (_A_Value >= 0f)
-                {
-                    _A_Value -= 0.1f;
-                }
-            }
-            else if (oldVowel == "I")
-            {
-                if (_I_Value >= 0f)
-                {
-                    _I_Value -= 0.1f;
-                }
-            }
-            else if (oldVowel == "U")
-            {
-                if (_U_Value >= 0f)
-                {
-                    _U_Value -= 0.1f;
-                }
-            }
-            else if (oldVowel == "E")
-            {
-                if (_E_Value >= 0f)
-                {
-                    _E_Value -= 0.1f;
-                }
-            }
-            else if (oldVowel == "O")
-            {
-                if (_O_Value >= 0f)
-                {
-                    _O_Value -= 0.1f;
-                }
-            }
-        }
-        //valueToCrease += 0.1f;
-        if (newVowel != null)
-        {
-            if (newVowel == "A")
-            {
-                if (_A_Value <= 1f)
-                {
-                    _A_Value += 0.1f;
-
-                }
-            }
-            else if (newVowel == "I")
-            {
-                if (_I_Value <= 1f)
-                {
-                    _I_Value += 0.1f;
-                }
-            }
-            else if (newVowel == "U")
-            {
-                if (_U_Value <= 1f)
-                {
-                    _U_Value += 0.1f;
-                }
-            }
-            else if (newVowel == "E")
-            {
-                if (_E_Value <= 1f)
-                {
-                    _E_Value += 0.1f;
-                }
-            }
-            else if (newVowel == "O")
-            {
-                if (_O_Value <= 1f)
-                {
-                    _O_Value += 0.1f;
-                }
-            }
-        }
-    }
-
-
-
 
     void ResetValue()
     {
-        
+
 
         _A_Value = 0;
         _I_Value = 0;
